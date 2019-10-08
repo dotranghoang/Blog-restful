@@ -1,6 +1,7 @@
 package com.codegym.controller;
 
 import com.codegym.model.Blog;
+import com.codegym.model.BlogCategory;
 import com.codegym.model.Category;
 import com.codegym.service.BlogService;
 import com.codegym.service.CategoryService;
@@ -20,11 +21,6 @@ public class ApiBlogController {
 
     @Autowired
     private CategoryService categoryService;
-
-    @ModelAttribute("categorys")
-    public Iterable<Category> categorys(){
-        return categoryService.findAll();
-    }
 
     @GetMapping("api/blogs")
     public ResponseEntity<List<Blog>> listAllBlog(){
@@ -49,8 +45,17 @@ public class ApiBlogController {
     }
 
     @PostMapping("api/blogs")
-    public ResponseEntity<Blog> createBlog(@RequestBody Blog blog) {
-       Blog blog1 = blogService.save(blog);
+    public ResponseEntity<Blog> createBlog(@RequestBody BlogCategory blogCategory) {
+       Category category = categoryService.findById(blogCategory.getCategory());
+
+       Blog blog1 = new Blog();
+
+       blog1.setTitle(blogCategory.getTitle());
+       blog1.setAuthor(blogCategory.getAuthor());
+       blog1.setContent(blogCategory.getContent());
+       blog1.setCategory(category);
+
+       blogService.save(blog1);
 
         return new ResponseEntity<Blog>(blog1,HttpStatus.CREATED);
     }

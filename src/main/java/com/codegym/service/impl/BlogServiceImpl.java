@@ -36,4 +36,6 @@ public class BlogServiceImpl implements BlogService {
     public Iterable<Blog> findAllByCategory(Category category) {
         return blogRepository.findAllByCategory(category);
     }
+
+
 }

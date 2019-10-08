@@ -19,7 +19,7 @@ public class ApiCategoryController {
     @Autowired
     private BlogService blogService;
 
-    @GetMapping("api/categorys")
+    @GetMapping("api/categories")
     public ResponseEntity<List<Category>> listAllCategory(){
         List<Category> categories = (List<Category>) categoryService.findAll();
 
@@ -28,8 +28,20 @@ public class ApiCategoryController {
         }
         return new ResponseEntity<List<Category>>(categories,HttpStatus.OK);
     }
-    @GetMapping("api/categorys/{id}")
-    public ResponseEntity<List<Blog>> getCategory(@PathVariable("id") Long id){
+
+    @GetMapping("api/categories/{id}")
+    public ResponseEntity<Category> getCategory(@PathVariable("id") Long id){
+        Category category = categoryService.findById(id);
+
+        if(category == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(category,HttpStatus.OK);
+    }
+
+    @GetMapping("api/categories/{id}/blogs")
+    public ResponseEntity<List<Blog>> getCategoryBlog(@PathVariable("id") Long id){
         Category category = categoryService.findById(id);
 
         if(category == null) {
@@ -41,7 +53,7 @@ public class ApiCategoryController {
         return new ResponseEntity<List<Blog>>(blogs,HttpStatus.OK);
     }
 
-    @PostMapping("/api/categorys")
+    @PostMapping("/api/categories")
     public ResponseEntity<Category> createCategory(@RequestBody Category category){
         Category category1 = categoryService.save(category);
 
@@ -49,7 +61,7 @@ public class ApiCategoryController {
 
     }
 
-    @PutMapping("/api/categorys/{id}")
+    @PutMapping("/api/categories/{id}")
     public ResponseEntity<Category> updateCategory(@PathVariable ("id") Long id,@RequestBody Category category) {
         Category  category1 = categoryService.findById(id);
 
@@ -62,7 +74,7 @@ public class ApiCategoryController {
         return new ResponseEntity<Category>(category1,HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/categorys/{id}")
+    @DeleteMapping("/api/categories/{id}")
     public ResponseEntity<Category> deleteCategory(@PathVariable ("id") Long id){
         Category category = categoryService.findById(id);
 

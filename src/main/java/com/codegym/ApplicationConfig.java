@@ -1,7 +1,5 @@
 package com.codegym;
 
-import com.codegym.formatter.CategoryFormatter;
-import com.codegym.model.Category;
 import com.codegym.service.BlogService;
 import com.codegym.service.CategoryService;
 import com.codegym.service.impl.BlogServiceImpl;
@@ -97,8 +95,4 @@ public class ApplicationConfig  extends WebMvcConfigurerAdapter implements Appli
         return properties;
     }
 
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addFormatter(new CategoryFormatter(applicationContext.getBean(CategoryService.class)));
-    }
 }
